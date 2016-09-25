@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	pb "github.com/colonelmo/grpc-chat/proto"
+	pb "github.com/KanybekMomukeyev/grpc_chat/proto"
 	"github.com/colonelmo/grpc-chat/utils"
 )
 

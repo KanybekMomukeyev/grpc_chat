@@ -9,8 +9,7 @@ import (
 	"google.golang.org/grpc/credentials"
 
 	"golang.org/x/net/context"
-
-	pb "github.com/colonelmo/grpc-chat/proto"
+	pb "github.com/KanybekMomukeyev/grpc_chat/proto"
 )
 
 func listenToClient(sendQ chan pb.Message, reader *bufio.Reader, name string) {
