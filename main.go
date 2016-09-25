@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-
-	"github.com/colonelmo/grpc-chat/cmd"
+	"github.com/KanybekMomukeyev/grpc_chat/cmd"
 )
 
 func main() {
