@@ -31,7 +31,8 @@ func Connect(address, nickname string, secure bool) error {
 	if secure {
 		var sn string
 		//TODO: server hotname override
-		var creds credentials.TransportAuthenticator
+		var creds credentials.TransportCredentials
+		//var creds credentials.TransportAuthenticator
 		//TODO: if self-signed
 		creds = credentials.NewClientTLSFromCert(nil, sn)
 		opts = append(opts, grpc.WithTransportCredentials(creds))
