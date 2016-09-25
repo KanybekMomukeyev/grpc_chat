@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/credentials"
 
 	pb "github.com/KanybekMomukeyev/grpc_chat/proto"
-	"github.com/colonelmo/grpc-chat/utils"
+	"github.com/KanybekMomukeyev/grpc_chat/utils"
 )
 
 var usersLock = &sync.Mutex{}

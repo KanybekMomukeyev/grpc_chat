@@ -2,10 +2,8 @@ package cmd
 
 import (
 	"log"
-
 	"github.com/spf13/cobra"
-
-	"github.com/colonelmo/grpc-chat/client"
+	"github.com/KanybekMomukeyev/grpc_chat/client"
 )
 
 // connectCmd represents the connect command

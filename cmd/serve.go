@@ -4,8 +4,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-
-	"github.com/colonelmo/grpc-chat/server"
+	"github.com/KanybekMomukeyev/grpc_chat/server"
 )
 
 // serveCmd represents the serve command
