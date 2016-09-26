@@ -66,7 +66,6 @@ func Connect(address, nickname string, secure bool) error {
 	if err != nil {
 		return err
 	}
-
 	stream.Send(&pb.Message{Sender: clientName, Register: true})
 
 	mailBox := make(chan pb.Message, 100)
@@ -74,6 +73,7 @@ func Connect(address, nickname string, secure bool) error {
 
 	sendQ := make(chan pb.Message, 100)
 	go listenToClient(sendQ, reader, clientName)
+
 	for {
 		select {
 		case toSend := <-sendQ:
