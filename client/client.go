@@ -26,6 +26,10 @@ func receiveMessages(stream pb.Chat_TransferMessageClient, mailbox chan pb.Messa
 	}
 }
 
+var (
+	serverAddr = "localhost:10000"
+)
+
 func Connect(address, nickname string, secure bool) error {
 	var opts []grpc.DialOption
 	if secure {
@@ -40,7 +44,10 @@ func Connect(address, nickname string, secure bool) error {
 		opts = append(opts, grpc.WithInsecure())
 	}
 
-	conn, err := grpc.Dial(address, opts...)
+	//conn, err := grpc.Dial(address, opts...)
+	conn, err := grpc.Dial(serverAddr, grpc.WithInsecure())
+
+
 	if err != nil {
 		return err
 	}
@@ -78,3 +85,5 @@ func Connect(address, nickname string, secure bool) error {
 	}
 	return nil
 }
+
+//go run main.go connect koke no

@@ -11,6 +11,7 @@ import (
 
 	pb "github.com/KanybekMomukeyev/grpc_chat/proto"
 	"github.com/KanybekMomukeyev/grpc_chat/utils"
+	"flag"
 )
 
 var usersLock = &sync.Mutex{}
@@ -89,16 +90,24 @@ func (s *chatServer) TransferMessage(stream pb.Chat_TransferMessageServer) error
 	for {
 		select {
 		case messageFromClient := <-clientMessages:
+			fmt.Print("broadcast(clientName, messageFromClient)\n")
 			broadcast(clientName, messageFromClient)
 		case messageFromOthers := <-clientMailbox:
+			fmt.Print("stream.Send(&messageFromOthers)\n")
 			stream.Send(&messageFromOthers)
 		}
 	}
 }
 
+var (
+	port       = flag.Int("port", 10000, "The server port")
+)
+
 func Serve(address string, secure bool) error {
 
-	lis, err := net.Listen("tcp", address)
+	//lis, err := net.Listen("tcp", address)
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
+
 	if err != nil {
 		return err
 	}
@@ -116,3 +125,5 @@ func Serve(address string, secure bool) error {
 	grpcServer.Serve(lis)
 	return nil
 }
+
+//go run main.go serve 10000
