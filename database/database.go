@@ -9,13 +9,13 @@ import (
 )
 
 var schema = `
-CREATE TABLE person (
+CREATE TABLE IF NOT EXISTS person (
     first_name text,
     last_name text,
     email text
 );
 
-CREATE TABLE place (
+CREATE TABLE IF NOT EXISTS place (
     country text,
     city text NULL,
     telcode integer
