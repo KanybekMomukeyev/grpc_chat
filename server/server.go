@@ -36,9 +36,10 @@ func (s *chatServer) TransferMessage(stream pb.Chat_TransferMessageServer) error
 		return err
 	}
 
-	fmt.Print("TransferMessage\n")
-	fmt.Println(clientIdentification.Sender)
-	fmt.Println(clientIdentification.Text)
+	fmt.Print("TransferMessage received message \n")
+	fmt.Printf("Sender: %s\n",clientIdentification.Sender)
+	fmt.Printf("Text: %s\n",clientIdentification.Text)
+	fmt.Printf("Register: %t\n",clientIdentification.Register)
 
 	if clientIdentification.Register {
 		clientName = clientIdentification.Sender
