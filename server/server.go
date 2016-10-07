@@ -35,15 +35,24 @@ func (s *chatServer) TransferMessage(stream pb.Chat_TransferMessageServer) error
 	if err != nil {
 		return err
 	}
+
+	fmt.Print("TransferMessage\n")
+	fmt.Println(clientIdentification.Sender)
+	fmt.Println(clientIdentification.Text)
+
 	if clientIdentification.Register {
 		clientName = clientIdentification.Sender
 		if hasListener(clientName) {
+			fmt.Print("name already exists error\n")
 			return fmt.Errorf("name already exists")
 		}
 		addListener(clientName, clientMailbox)
 	} else {
+		fmt.Print("need to register first error\n")
 		return fmt.Errorf("need to register first")
 	}
+
+	fmt.Print("passed register\n")
 
 	clientMessages := make(chan pb.Message, 100)
 	go listenToClient(stream, clientMessages)
@@ -65,6 +74,7 @@ func addListener(name string, msgQ chan pb.Message) { // string: "channel of Mes
 	usersLock.Lock()
 	defer usersLock.Unlock()
 	usersMap[name] = msgQ
+	fmt.Print("addListener\n")
 }
 
 func removeListener(name string) {
@@ -105,13 +115,6 @@ func listenToClient(stream pb.Chat_TransferMessageServer, messages chan<- pb.Mes
 		print("stream.Recv()\n")
 		s := fmt.Sprintf("msg.Sender => %s|  msg.Text => %s| msg.Register=>%t msg.Disconnect=>%t\n", msg.Sender, msg.Text, msg.Register, msg.Disconnect)
 		fmt.Println(s)
-
-
-
-		print(msg.Sender)
-		print(msg.Text)
-
-
 
 		if err == io.EOF {
 			// ?
