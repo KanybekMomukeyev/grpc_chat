@@ -117,6 +117,7 @@ func listenToClient(stream pb.Chat_TransferMessageServer, messages chan<- pb.Mes
 		s := fmt.Sprintf("msg.Sender => %s|  msg.Text => %s| msg.Register=>%t msg.Disconnect=>%t\n", msg.Sender, msg.Text, msg.Register, msg.Disconnect)
 		fmt.Println(s)
 
+
 		if err == io.EOF {
 			// ?
 		}
