@@ -16,7 +16,7 @@ import (
 
 var usersLock = &sync.Mutex{}
 
-var usersMap = make(map[string]chan pb.Message, 100)
+var usersMap = make(map[string]chan pb.Message, 100) //["key":"channel of Message"]
 
 type chatServer struct{}
 
@@ -24,51 +24,12 @@ func newChatServer() *chatServer {
 	return &chatServer{}
 }
 
-func addListener(name string, msgQ chan pb.Message) {
-	usersLock.Lock()
-	defer usersLock.Unlock()
-	usersMap[name] = msgQ
-}
-
-func removeListener(name string) {
-	usersLock.Lock()
-	defer usersLock.Unlock()
-	delete(usersMap, name)
-}
-
-func hasListener(name string) bool {
-	usersLock.Lock()
-	defer usersLock.Unlock()
-	_, exists := usersMap[name]
-	return exists
-}
-
-func broadcast(sender string, msg pb.Message) {
-	usersLock.Lock()
-	defer usersLock.Unlock()
-	for user, q := range usersMap {
-		if user != sender {
-			q <- msg
-		}
-	}
-}
-
-func listenToClient(stream pb.Chat_TransferMessageServer, messages chan<- pb.Message) {
-	for {
-		msg, err := stream.Recv()
-		if err == io.EOF {
-			// ?
-		}
-		if err != nil {
-			// ??
-		}
-		messages <- *msg
-	}
-}
-
 func (s *chatServer) TransferMessage(stream pb.Chat_TransferMessageServer) error {
+
 	clientIdentification, err := stream.Recv()
+
 	var clientName string
+
 	clientMailbox := make(chan pb.Message, 100)
 
 	if err != nil {
@@ -96,6 +57,69 @@ func (s *chatServer) TransferMessage(stream pb.Chat_TransferMessageServer) error
 			fmt.Print("stream.Send(&messageFromOthers)\n")
 			stream.Send(&messageFromOthers)
 		}
+	}
+}
+
+
+func addListener(name string, msgQ chan pb.Message) { // string: "channel of Message"
+	usersLock.Lock()
+	defer usersLock.Unlock()
+	usersMap[name] = msgQ
+}
+
+func removeListener(name string) {
+	usersLock.Lock()
+	defer usersLock.Unlock()
+	delete(usersMap, name)
+}
+
+func hasListener(name string) bool {
+	usersLock.Lock()
+	defer usersLock.Unlock()
+	_, exists := usersMap[name]
+	return exists
+}
+
+func broadcast(sender string, msg pb.Message) { // string:Message
+	usersLock.Lock()
+	defer usersLock.Unlock()
+
+	// for key, value := range usersMap {}
+	// send message to all channels, not for own
+	//
+
+	for key, channelOfMessage := range usersMap {
+		if key != sender {
+			channelOfMessage <- msg
+		}
+	}
+}
+
+// messages <- can only be used to send Message ||--> https://golang.org/ref/spec#Channel_types
+// stream Chat_TransferMessageServer used for stream receive/Sende
+// this will listen from clients
+func listenToClient(stream pb.Chat_TransferMessageServer, messages chan<- pb.Message) {
+	for {
+		msg, err := stream.Recv()
+
+		print("stream.Recv()\n")
+		s := fmt.Sprintf("msg.Sender => %s|  msg.Text => %s| msg.Register=>%t msg.Disconnect=>%t\n", msg.Sender, msg.Text, msg.Register, msg.Disconnect)
+		fmt.Println(s)
+
+
+
+		print(msg.Sender)
+		print(msg.Text)
+
+
+
+		if err == io.EOF {
+			// ?
+		}
+		if err != nil {
+			// ??
+		}
+		messages <- *msg
 	}
 }
 

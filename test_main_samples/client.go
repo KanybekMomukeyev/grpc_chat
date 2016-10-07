@@ -1,15 +1,15 @@
-package client
+package main
 
 import (
-	"bufio"
-	"fmt"
-	"os"
+"bufio"
+"fmt"
+"os"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
+"google.golang.org/grpc"
+"google.golang.org/grpc/credentials"
 
-	"golang.org/x/net/context"
-	pb "github.com/KanybekMomukeyev/grpc_chat/proto"
+"golang.org/x/net/context"
+pb "github.com/KanybekMomukeyev/grpc_chat/proto"
 )
 
 func listenToClient(sendQ chan pb.Message, reader *bufio.Reader, name string) {
@@ -81,10 +81,15 @@ func Connect(address, nickname string, secure bool) error {
 			stream.Send(&toSend)
 
 		case received := <-mailBox:
-			fmt.Printf("Sender ==> %s || received.Text ==> %s", received.Sender, received.Text)
+			fmt.Printf("%s> %s", received.Sender, received.Text)
 		}
 	}
 	return nil
 }
 
 //go run main.go connect koke no
+
+func main() {
+	Connect("","Koke",false)
+}
+
