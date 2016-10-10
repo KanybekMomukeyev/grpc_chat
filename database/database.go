@@ -1,9 +1,10 @@
-package main
+package database
 
 import (
 	_ "github.com/lib/pq"
 	"database/sql"
 	"github.com/jmoiron/sqlx"
+	"github.com/blevesearch/bleve"
 	"log"
 	"fmt"
 )
@@ -33,10 +34,14 @@ type Place struct {
 	TelCode int
 }
 
-func main() {
+func SomeDatabaseFunction() {
 	// this Pings the database trying to connect, panics on error
 	// use sqlx.Open() for sql.Open() semantics
-	db, err := sqlx.Connect("postgres", "user=kanybek dbname=Deboot_test sslmode=disable")
+
+	//db, err := sql.Open("mysql", "user:password@tcp(127.0.0.1:3306)/hello")
+	//db, err := sql.Open("postgres", "dbname=dat_test user=dat password=!test host=localhost sslmode=disable")
+	db, err := sqlx.Connect("postgres", "postgres://kano:nazgulum@172.17.0.2:5432/streamtestdb?sslmode=disable")
+
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -114,4 +119,33 @@ func main() {
 	// as the name -> db mapping, so struct fields are lowercased and the `db` tag
 	// is taken into consideration.
 	rows, err = db.NamedQuery(`SELECT * FROM person WHERE first_name=:first_name`, jason)
+}
+
+func SomeMethodBleve() {
+	// open a new index
+	mapping := bleve.NewIndexMapping()
+	index, err := bleve.New("example.bleve", mapping)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	data := struct {
+		Name string
+	}{
+		Name: "text",
+	}
+
+	// index some data
+	index.Index("id", data)
+
+	// search for some text
+	query := bleve.NewMatchQuery("text")
+	search := bleve.NewSearchRequest(query)
+	searchResults, err := index.Search(search)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(searchResults)
 }
