@@ -24,7 +24,7 @@ ADD main.go /gopath/src/github.com/KanybekMomukeyev/grpc_chat/main.go
 
 EXPOSE 8080
 
-CMD ["go", "run", "/gopath/src/github.com/KanybekMomukeyev/grpc_chat/main.go serve 10000"]
+CMD ["go", "run", "/gopath/src/github.com/KanybekMomukeyev/grpc_chat/test_main_samples/start_server.go"]
 
 #ENTRYPOINT ["/gopath/bin/testingpackages"]
 #ENTRYPOINT /go/bin/streamtest
