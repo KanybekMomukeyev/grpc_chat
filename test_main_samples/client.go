@@ -28,6 +28,7 @@ func receiveMessages(stream pb.Chat_TransferMessageClient, mailbox chan pb.Messa
 
 var (
 	serverAddr = "localhost:10000"
+	//serverAddr = "138.68.84.55:8080"
 )
 
 func Connect(address, nickname string, secure bool) error {

@@ -129,8 +129,7 @@ func listenToClient(stream pb.Chat_TransferMessageServer, messages chan<- pb.Mes
 }
 
 var (
-	//port       = flag.Int("port", 10000, "The server port")
-	port       = flag.Int("port", 8080, "The server port")
+	port       = flag.Int("port", 10000, "The server port")
 )
 
 func Serve(address string, secure bool) error {
