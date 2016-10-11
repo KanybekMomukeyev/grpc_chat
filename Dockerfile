@@ -1,5 +1,5 @@
-#FROM resin/raspberrypi3-golang
-FROM google/golang
+FROM resin/raspberrypi3-golang
+#FROM google/golang
 
 WORKDIR /gopath/src/github.com/KanybekMomukeyev/grpc_chat
 
