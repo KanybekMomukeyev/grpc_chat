@@ -1,5 +1,5 @@
-#FROM resin/raspberrypi3-golang
-FROM google/golang
+FROM resin/raspberrypi3-golang
+#FROM google/golang
 
 WORKDIR /gopath/src/github.com/KanybekMomukeyev/grpc_chat
 
@@ -24,7 +24,7 @@ ADD main.go /gopath/src/github.com/KanybekMomukeyev/grpc_chat/main.go
 
 EXPOSE 8080
 
-CMD ["go", "run", "/gopath/src/github.com/KanybekMomukeyev/testingpackages/main.go serve 10000"]
+CMD ["go", "run", "/gopath/src/github.com/KanybekMomukeyev/grpc_chat/main.go serve 10000"]
 
 #ENTRYPOINT ["/gopath/bin/testingpackages"]
 #ENTRYPOINT /go/bin/streamtest
